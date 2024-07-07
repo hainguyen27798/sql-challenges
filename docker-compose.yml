@@ -1,0 +1,23 @@
+name: sql-challenges
+networks:
+    sql_challenges_network:
+        driver: bridge
+services:
+    master_database:
+        container_name: master_db
+        image: mysql:8.0
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: $MYSQL_DATABASE
+            MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+        ports:
+            - '${MYSQL_PORT}:3306'
+        volumes:
+            - cl_database:/var/lib/mysql
+            - ./.docker/my.cnf:/etc/mysql/my.cnf
+            - ./src/data:/data
+        networks:
+            - sql_challenges_network
+volumes:
+    cl_database:
+        driver: local
